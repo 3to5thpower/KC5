@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 int main(int argc, char *argv[]) {
     if(argc != 2) {
@@ -12,18 +13,38 @@ int main(int argc, char *argv[]) {
     puts(".intel_syntax noprefix");
     puts(".globl main");
     puts("main:");
-    printf("  mov rax, %ld\n", strtol(p, &p, 10));
+    //printf("  mov rax, %ld\n", strtol(p, &p, 10));
 
     while(*p) {
-        if (*p == '+') {
+        if(isspace(*p)) {
             p++;
-            printf("  add rax, %ld\n", strtol(p, &p, 10));
+            continue;
+        }
+        if (*p == '+') {
+            puts("  pop rdi");
+            puts("  pop rax");
+            puts("  add rax, rdi");
+            puts("  push rax");
+            p++;
             continue;
         }
 
         if (*p == '-') {
+            puts("  pop rdi");
+            puts("  pop rax");
+            puts("  sub rax, rdi");
+            puts("  push rax");
             p++;
-            printf("  sub rax, %ld\n", strtol(p, &p, 10));
+
+            continue;
+        }
+        if(isdigit(*p)) {
+            int n = 0;
+            while(isdigit(*p)) {
+                n = n * 10 + (*p - '0');
+                p++;
+            }
+            printf("  push %d\n", n);
             continue;
         }
 
@@ -31,6 +52,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    puts("  pop rax");
     puts("  ret");
     return 0;
 }
