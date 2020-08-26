@@ -13,7 +13,6 @@ int main(int argc, char *argv[]) {
     puts(".intel_syntax noprefix");
     puts(".globl main");
     puts("main:");
-    //printf("  mov rax, %ld\n", strtol(p, &p, 10));
 
     while(*p) {
         if(isspace(*p)) {
@@ -76,3 +75,4 @@ int main(int argc, char *argv[]) {
     puts("  ret");
     return 0;
 }
+
