@@ -1,9 +1,12 @@
 #!/bin/bash
+
+bin="$1"
+
 assert() {
   expected="$1"
   input="$2"
 
-  ./kc5 "$input" > tmp.s
+  ./$bin "$input" > tmp.s
   cc -o tmp tmp.s
   ./tmp
   actual="$?"
